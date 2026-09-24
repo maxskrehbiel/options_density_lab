@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "options_density_lab"
+version = "0.1.0"
+description = "Recover market-implied (risk-neutral) probability distributions from option prices, validated on synthetic data with a known truth."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Maxwell Krehbiel" }]
+requires-python = ">=3.11"
+keywords = ["options", "risk-neutral density", "breeden-litzenberger", "implied volatility", "svi"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.11",
+    "pandas>=2.1",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==2.3.1",
+    "pandas-stubs>=3.0",
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff==0.16.8",
+]
+
+[project.scripts]
+options_density_lab = "options_density_lab.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/maxskrehbiel/options_density_lab"
+Repository = "https://github.com/maxskrehbiel/options_density_lab"
+Issues = "https://github.com/maxskrehbiel/options_density_lab/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/options_density_lab"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "N", "RUF", "PTH"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.mypy]
+strict = true
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["scipy", "scipy.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["options_density_lab"]
+branch = true
+omit = ["*/__main__.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
